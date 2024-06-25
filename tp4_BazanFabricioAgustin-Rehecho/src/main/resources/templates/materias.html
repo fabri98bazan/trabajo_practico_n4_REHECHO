@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+	<head data-th-replace="~{/layouts/header :: head}" ></head>
+	<body>
+	<div class="container-fluid">
+		<header data-th-replace="~{/layouts/header :: header}"></header>
+		<div class="row">
+				<div class="col col-sm-12 fondo-form p-5">
+					<div class="row mb-5">
+						<div class="d-grid gap-2 d-md-flex justify-content-md-end mb-2">
+							<a class="btn btn-primary" data-th-href="@{/materia/nuevo}">Agregar nueva Materia</a>
+						</div>
+						<table class="table table-striped table-hover">
+							<tr>
+								<th>Código</th>
+								<th>Nombre de Materia</th>
+								<th>Duracion</th>
+								<th>Curso</th>
+								<th>Modalidad</th>
+								<th>Docente</th>
+								<th>Carrera</th>
+								<th>Opciones</th>
+							</tr>
+							
+							<tr data-th-each="mate: ${materias}">
+								<td data-th-text="${mate.cod}"></td>
+								<td data-th-text="${mate.nombre_materia}"></td>
+								<td data-th-text="${mate.cant_horas}+' horas '"></td>
+								<td data-th-text="${mate.curso}"></td>
+								<td>
+									<span th:if="${mate.modalidad}">Precencial</span>
+									<span th:if="${!mate.modalidad}">Virtual</span>
+								</td>
+								<td data-th-text="${mate.docente.nombre_docente}+' '+${mate.docente.apellido_docente}"></td>
+								<td data-th-text="${mate.carrera.nombre_carrera}"></td>
+								<td>
+									<a class="btn btn-warning" data-th-href="@{/materia/modificar/}+${mate.cod}">Editar</a>
+									<button class="btn btn-danger"  data-bs-toggle="modal" data-bs-target="#deleteModal" 
+									th:data-cod="${mate.cod}">Eliminar</button>
+								</td>
+							</tr>
+						</table>
+					</div>
+				</div>
+			</div>
+	</div>
+	<footer data-th-replace="~{/layouts/footer :: footer}"></footer>
+
+		<!-- Modal -->
+		<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-tittle" id="deleteModalLabel">Confirmar Eliminación</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						¿Estás seguro que deseas eliminar?
+					</div>
+					<div class="model-footer">
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+						<form th:action="@{/materia/eliminar/{cod}(cod=${selectedCod})}" method="get">
+							<button type="submit" class="btn btn-danger">Eliminar</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		
+		</div>
+		
+		<script>
+			document.addEventListener('DOMContentLoaded',function(){
+				var deleteModal= document.getElementById('deleteModal');
+				deleteModal.addEventListener('show.bs.modal',function(event){
+					var button= event.relatedTarget;
+					var cod=button.getAttribute('data-cod');
+		            var form = deleteModal.querySelector('form');
+		            form.setAttribute('action', '/materia/eliminar/' + cod);
+		       
+				});
+			});
+		</script>
+	
+	<script type="text/javascript" data-th-src="@{/webjars/bootstrap/js/bootstrap.bundle.min.js}" ></script>
+	</body>
+</html>
