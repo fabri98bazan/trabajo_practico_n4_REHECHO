@@ -68,6 +68,7 @@ public class CollectionMateria {
 				{
 					m.setNombre_materia(materia.getNombre_materia());
 					m.setModalidad(materia.isModalidad());
+					m.setCurso(materia.getCurso());
 					m.setDocente(materia.getDocente());
 					m.setCarrera(materia.getCarrera());
 					m.setCant_horas(materia.getCant_horas());

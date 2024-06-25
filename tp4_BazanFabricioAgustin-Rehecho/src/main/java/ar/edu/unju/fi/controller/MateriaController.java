@@ -46,7 +46,7 @@ public class MateriaController {
 	}
 	
 	@PostMapping("/guardar")
-	public ModelAndView guardarMateria(@ModelAttribute("materia") Materia materia) {
+	public ModelAndView guardarMateria(@ModelAttribute("materia") Materia materia, Model model) {
 		ModelAndView modelView=new ModelAndView("materias");
 		String mensaje;
 		carrera=CollectionCarrera.buscarCarrera(materia.getCarrera().getCod_carrera());
@@ -61,8 +61,8 @@ public class MateriaController {
 		}else {
 			mensaje="Materia no se pudo guardar";
 		}
-		modelView.addObject("exito", exito);
-		modelView.addObject("mensaje", mensaje);
+		model.addAttribute("exito", exito);
+		model.addAttribute("mensaje", mensaje);
 		modelView.addObject("materias",CollectionMateria.getMaterias());
 		return modelView;
 	}
