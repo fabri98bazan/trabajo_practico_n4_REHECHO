@@ -72,6 +72,8 @@ public class MateriaController {
 		Materia materiaEncontrada= new Materia();
 		boolean edicion=true;
 		materiaEncontrada=CollectionMateria.buscarMaterias(codigo);
+		model.addAttribute("docentes", CollectionDocente.getDocentes());
+		model.addAttribute("carreras", CollectionCarrera.getCarreras());
 		model.addAttribute("edicion", edicion);
 		model.addAttribute("materia", materiaEncontrada);
 		model.addAttribute("titulo","Modificar Materia");
