@@ -71,9 +71,10 @@ public class CollectionDocente {
 					d.setEmail_docente(docente.getEmail_docente());
 					d.setNum_telefono(docente.getNum_telefono());
 					encontrado=true;
-				}if(!encontrado) {
-					throw new Exception("La materia con  código: "+docente.getLegajo()+" no existe");
 				}
+			}
+			if(!encontrado) {
+				throw new Exception("El docente con  legajo: "+docente.getLegajo()+" no existe");
 			}
 		}catch(Exception e) {
 			System.out.println(e.getMessage());
