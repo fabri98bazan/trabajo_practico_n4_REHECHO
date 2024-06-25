@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+	<head data-th-replace="~{/layouts/header :: head}" ></head>
+	
+	<body>
+		<div class="container-fluid">
+			<header data-th-replace="~{/layouts/header :: header}"></header>
+			<div class="row">
+				<div class="col col-sm-12 fondo-form p-5">
+					<div class="row mb-5">
+					
+						<!-- Nuevo agregado -->
+						<div th:if="${exito}" class="alert alert-succes alert dismissible fade show" role="alert">
+							<strong data-th-text="${mensaje}"></strong>
+							<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+						</div>
+						
+						<div th:if="${!exito && mensaje != ''}" class="alert alert-danger alert dismissible fade show" role="alert">
+							<strong data-th-text="${mensaje}"></strong>
+							<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+						</div>
+						<!--Fin del Nuevo agregado -->
+					
+						<div class="d-grid gap-2 d-md-flex justify-content-md-end mb-2">
+							<a class="btn btn-primary" data-th-href="@{/carrera/nuevo}">Agregar nueva Carrera</a>
+						</div>
+						<table class="table table-striped table-hover">
+							<tr>
+								<th>Código</th>
+								<th>Nombre</th>
+								<th>Duracion</th>
+								<th>Estado</th>
+								<th>Opciones</th>
+							</tr>
+							
+							<tr data-th-each="carre: ${carreras}">
+								<td data-th-text="${carre.cod_carrera}"></td>
+								<td data-th-text="${carre.nombre_carrera}"></td>
+								<td data-th-text="${carre.cant_anios}+' años '"></td>
+								<td>
+									<span th:if="${carre.estado}">Activa</span>
+									<span th:if="${!carre.estado}">Inactiva</span>
+								</td>
+								<td>
+									<a class="btn btn-warning" data-th-href="@{/carrera/modificar/}+${carre.cod_carrera}">Editar</a>
+									<button class="btn btn-danger"  data-bs-toggle="modal" data-bs-target="#deleteModal" 
+									th:data-cod_carrera="${carre.cod_carrera}">Eliminar</button>
+								</td>
+							</tr>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+		<footer data-th-replace="~{/layouts/footer :: footer}"></footer>
+		<!-- Modal -->
+		<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-tittle" id="deleteModalLabel">Confirmar Eliminación</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						¿Estás seguro que deseas eliminar?
+					</div>
+					<div class="model-footer">
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+						<form th:action="@{/carrera/eliminar/{cod_carrera}(cod_carrera=${selectedCod_carrera})}" method="get">
+							<button type="submit" class="btn btn-danger">Eliminar</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		
+		</div>
+		
+		<script>
+			document.addEventListener('DOMContentLoaded',function(){
+				var deleteModal= document.getElementById('deleteModal');
+				deleteModal.addEventListener('show.bs.modal',function(event){
+					var button= event.relatedTarget;
+					var cod_carrera=button.getAttribute('data-cod_carrera');
+					var form = deleteModal.querySelector('form');
+					form.setAttribute('action','/carrera/eliminar/'+cod_carrera);
+				});
+			});
+		</script>
+		
+		<script type="text/javascript" data-th-src="@{/webjars/bootstrap/js/bootstrap.bundle.min.js}" ></script>
+	</body>
+</html>
