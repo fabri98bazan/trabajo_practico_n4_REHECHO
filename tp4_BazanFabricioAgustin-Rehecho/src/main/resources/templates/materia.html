@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+	<head data-th-replace="~{/layouts/header :: head}" ></head>
+	<body>
+		<div id="container-fluid">
+			<header data-th-replace="~{/layouts/header :: header}" ></header>
+			<div class="row py-5">
+				<div class="row mb-5">
+					<h3 data-th-text="${edicion}?'Modificar Materia':'Nueva Materia'" class="text-center"></h3>
+				</div>
+				<div class="row">
+					<form data-th-action="${edicion}?@{/materia/modificar} : @{/materia/guardar}" th:object="${materia}" method="post">
+					
+						<div class="row mb-3 justify-content-center">
+							<label for="codigo" class="col-md-2 col-form-label text-center">Código de la materia</label>
+							<div class="col-md-6">
+								<input type="number" class="form-control" id="codigo" th:field="*{cod}" th:disabled="${edicion}?true:false">
+								<input type="hidden" class="form-control" id="codigo" th:field="*{cod}" th:if="${edicion}">
+							</div>
+						</div>
+						
+						<div class="row mb-3 justify-content-center">
+							<label for="nombre" class="col-md-2 col-form-label text-center">Nombre de la materia</label>
+							<div class="col-md-6">
+								<input type="text" class="form-control" id="nombre" th:field="*{nombre_materia}">
+							</div>
+						</div>
+						
+						<div class="row mb-3 justify-content-center">
+							<label for="duracion" class="col-md-2 col-form-label text-center">Carga Horaria(Horas)</label>
+							<div class="col-md-6">
+								<input type="number" class="form-control" id="duracion" th:field="*{cant_horas}">
+							</div>
+						</div>
+						
+						<div class="row mb-3 justify-content-center" th:if="${edicion}">
+							<label for="estado" class="col-md-2 col-form-label text-center">Modalidad</label>
+							<div class="col-md-6">
+								<input type="radio" class="form-control-input" th:field="*{modalidad}" value="true" name="radioActiva">
+								<label class="form-control-label" for="radioActiva">Prescencial</label>
+								
+								<input type="radio" class="form-control-input" th:field="*{modalidad}" value="false" name="radioInactiva">
+								<label class="form-control-label" for="radioInactiva">Virtual</label>
+							</div>
+						</div>
+						
+						<div class="row mb-3 justify-content-center">
+	                        <label for="curso" class="col-md-2 col-form-label text-center">Curso</label>
+	                        <div class="col-md-6">
+	                            <select th:field="*{curso}" class="form-control" id="curso" required>
+	                                <option value="" disabled selected>Seleccionar un curso</option>
+	                                <option value="Primero">Primero</option>
+	                                <option value="Segundo">Segundo</option>
+	                                <option value="Tercero">Tercero</option>
+	                                <option value="Cuarto">Cuarto</option>
+	                                <option value="Quinto">Quinto</option>
+	                            </select>
+	                        </div>
+                        </div>
+						
+						<div class="row mb-3 justify-content-center">
+							<label for="carrera" class="col-sm-12 col-lg-2 col-form-label text-center">Carrera</label>
+							<div class="col-md-6">
+								<select th:field="*{carrera.cod_carrera}" class="form-control" required>
+									<option value=0 disabled selected>Seleccione carrera</option>
+									<option th:each="carrera: ${carreras}" th:value="${carrera.cod_carrera}" th:text="${carrera.nombre_carrera}"></option>
+								</select>
+							</div>
+						</div>
+
+					<div class="row mb-3 justify-content-center">
+							<label for="docente" class="col-sm-12 col-lg-2 col-form-label text-center">Carrera</label>
+							<div class="col-md-6">
+								<select th:field="*{carrera.cod_carrera}" class="form-control" required>
+									<option value=0 disabled selected>Seleccione docente</option>
+									<option th:each="docente: ${docentes}" th:value="${docente.legajo}" th:text="${docente.nombre_docente} + ' ' + ${docente.apellido_docente}"></option>
+								</select>
+							</div>
+						</div>
+						
+						<p class="text-center"><input type="submit" class="btn btn-primary" th:value="${edicion}?'Modificar':'Guardar'"></p>
+						
+					</form>
+			</div>
+			</div>
+		</div>
+		<footer data-th-replace="~{/layouts/footer :: footer}"></footer>
+		<script type="text/javascript" data-th-src="@{/webjars/bootstrap/js/bootstrap.bundle.min.js}" ></script>
+	</body>
+</html>
